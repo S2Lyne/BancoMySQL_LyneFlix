@@ -1,6 +1,7 @@
 # BancoMySQL_LyneFlix
 
 Foi realizado uma atividade para a matéria de Banco de Dados:
+By David Sodré Lins @davidsodrelins (prof de Banco de Dados)
 
 Você foi selecionado na entrevista do Netflix para uma vaga de residência em Banco de Dados e a
 etapa seguinte consiste no projeto de uma plataforma de armazenamento do catálogo de filmes para
