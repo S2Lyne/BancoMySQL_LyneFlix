@@ -1,0 +1,873 @@
+Todo o banco criado com as tabelas, procedures e views pedidas na atividade descrita no Readme:
+
+CREATE DATABASE `lyne_flix` ;
+use `lyne_flix`;
+
+CREATE TABLE `lyne_flix`.`ator_iz` (
+  `id_ator_iz` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(255) NOT NULL,
+  `genero` VARCHAR(1) NOT NULL DEFAULT 'M' COMMENT '\'M\' - Masculino\n\'F\' - Feminino',
+  PRIMARY KEY (`id_ator_iz`));
+
+CREATE TABLE `lyne_flix`.`diretor` (
+  `id_diretor` INT NOT NULL AUTO_INCREMENT,
+  `nome_dir` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id_diretor`));
+  
+  CREATE TABLE `lyne_flix`.`genero` (
+  `id_genero` INT NOT NULL AUTO_INCREMENT,
+  `tipo_genero` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id_genero`));
+
+CREATE TABLE `lyne_flix`.`filme` (
+  `id_filme` INT NOT NULL AUTO_INCREMENT,
+  `nome_filme` VARCHAR(45) NOT NULL,
+  `diretor` INT NOT NULL,
+  `ano_filme` VARCHAR(4) NOT NULL,
+  `avaliacao` INT NOT NULL,
+  PRIMARY KEY (`id_filme`),
+  INDEX `fk_diretor_filme_idx` (`diretor` ASC) VISIBLE,
+  CONSTRAINT `fk_diretor_filme`
+    FOREIGN KEY (`diretor`)
+    REFERENCES `lyne_flix`.`diretor` (`id_diretor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE `lyne_flix`.`papel` (
+  `id_papel` INT NOT NULL AUTO_INCREMENT,
+  `nome_papel` VARCHAR(255) NOT NULL,
+  `ator_iz` INT NOT NULL,
+  PRIMARY KEY (`id_papel`),
+  INDEX `fk_ator_iz_papel_idx` (`ator_iz` ASC) VISIBLE,
+  CONSTRAINT `fk_ator_iz_papel`
+    FOREIGN KEY (`ator_iz`)
+    REFERENCES `lyne_flix`.`ator_iz` (`id_ator_iz`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+  
+  CREATE TABLE `lyne_flix`.`elenco` (
+  `filme` INT NOT NULL,
+  `papel` INT NOT NULL,
+  INDEX `fk_filme_elenco_idx` (`filme` ASC) VISIBLE,
+  INDEX `fk_papel_elenco_idx` (`papel` ASC) VISIBLE,
+  CONSTRAINT `fk_filme_elenco`
+    FOREIGN KEY (`filme`)
+    REFERENCES `lyne_flix`.`filme` (`id_filme`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_papel_elenco`
+    FOREIGN KEY (`papel`)
+    REFERENCES `lyne_flix`.`papel` (`id_papel`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+  
+  CREATE TABLE `lyne_flix`.`filme_genero` (
+  `filme` INT NOT NULL,
+  `genero` INT NOT NULL,
+  INDEX `fk_filme_genero_idx` (`filme` ASC) VISIBLE,
+  INDEX `fk_genero_filme_idx` (`genero` ASC) VISIBLE,
+  CONSTRAINT `fk_filme_genero`
+    FOREIGN KEY (`filme`)
+    REFERENCES `lyne_flix`.`filme` (`id_filme`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_genero_filme`
+    FOREIGN KEY (`genero`)
+    REFERENCES `lyne_flix`.`genero` (`id_genero`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+DELIMITER $$
+CREATE PROCEDURE `PROC_CAD_ATOR_IZ` (IN nome varchar(255), 
+									  IN genero varchar(1))
+BEGIN
+	INSERT INTO `lyne_flix`.`ator_iz`(`nome`, `genero`)
+    VALUE (nome, genero);
+END$$
+DELIMITER ;
+
+CALL PROC_CAD_ATOR_IZ ('Adam Sandler','M');
+CALL PROC_CAD_ATOR_IZ ('Al Harrell','M');
+CALL PROC_CAD_ATOR_IZ ('Alexandra Staden','F');
+CALL PROC_CAD_ATOR_IZ ('Allen Garfield','M');
+CALL PROC_CAD_ATOR_IZ ('Anthony Quinn','M');
+CALL PROC_CAD_ATOR_IZ ('Antonio Banderas','M');
+CALL PROC_CAD_ATOR_IZ ('Barbara Nedeljáková','F');
+CALL PROC_CAD_ATOR_IZ ('Barry Corbin','M');
+CALL PROC_CAD_ATOR_IZ ('Bijou Phillips','M');
+CALL PROC_CAD_ATOR_IZ ('Bradley Cooper','M');
+CALL PROC_CAD_ATOR_IZ ('Bridget Fonda','F');
+CALL PROC_CAD_ATOR_IZ ('Bronson Pinchot','M');
+CALL PROC_CAD_ATOR_IZ ('Bruce Ramsay','M');
+CALL PROC_CAD_ATOR_IZ ('Bruce Willis','M');
+CALL PROC_CAD_ATOR_IZ ('Charles Rocket','M');
+CALL PROC_CAD_ATOR_IZ ('Chris Penn','M');
+CALL PROC_CAD_ATOR_IZ ('Christian Slater','M');
+CALL PROC_CAD_ATOR_IZ ('Clancy Brown','M');
+CALL PROC_CAD_ATOR_IZ ('Clive Owen','M');
+CALL PROC_CAD_ATOR_IZ ('Craig Hamann','M');
+CALL PROC_CAD_ATOR_IZ ('Craig Sheffer','M');
+CALL PROC_CAD_ATOR_IZ ('Crystal Shaw','F');
+CALL PROC_CAD_ATOR_IZ ('D.J. Cotrona','M');
+CALL PROC_CAD_ATOR_IZ ('Daryl Hannah','F');
+CALL PROC_CAD_ATOR_IZ ('Dave Foley','M');
+CALL PROC_CAD_ATOR_IZ ('David Carradine','M');
+CALL PROC_CAD_ATOR_IZ ('David Koechner','M');
+CALL PROC_CAD_ATOR_IZ ('Denzel Washington','M');
+CALL PROC_CAD_ATOR_IZ ('Derek Richardson','M');
+CALL PROC_CAD_ATOR_IZ ('Dylan McDermott','M');
+CALL PROC_CAD_ATOR_IZ ('Ed Helms','M');
+CALL PROC_CAD_ATOR_IZ ('Eiza González','F');
+CALL PROC_CAD_ATOR_IZ ('Elizabeth Banks','F');
+CALL PROC_CAD_ATOR_IZ ('Eric Stoltz','M');
+CALL PROC_CAD_ATOR_IZ ('Eythor Gudjonsson','M');
+CALL PROC_CAD_ATOR_IZ ('Fred Pearson','M');
+CALL PROC_CAD_ATOR_IZ ('Gary Oldman','M');
+CALL PROC_CAD_ATOR_IZ ('Gene Hackman','M');
+CALL PROC_CAD_ATOR_IZ ('George Dzundza','M');
+CALL PROC_CAD_ATOR_IZ ('Gordon Liu Chia-Hui','M');
+CALL PROC_CAD_ATOR_IZ ('Harvey Keitel','M');
+CALL PROC_CAD_ATOR_IZ ('Heather Matarazzo','F');
+CALL PROC_CAD_ATOR_IZ ('James Le Gros','M');
+CALL PROC_CAD_ATOR_IZ ('Jana Kadeřábková','F');
+CALL PROC_CAD_ATOR_IZ ('Jay Hernandez','M');
+CALL PROC_CAD_ATOR_IZ ('Jean-Hugues Anglade','M');
+CALL PROC_CAD_ATOR_IZ ('Jennifer Beals','F');
+CALL PROC_CAD_ATOR_IZ ('Jesse Garcia','M');
+CALL PROC_CAD_ATOR_IZ ('Jessica Alba','F');
+CALL PROC_CAD_ATOR_IZ ('Jim Belushi','M');
+CALL PROC_CAD_ATOR_IZ ('Joaquim de Almeida','M');
+CALL PROC_CAD_ATOR_IZ ('John Travolta','M');
+CALL PROC_CAD_ATOR_IZ ('Johnny Knoxville','M');
+CALL PROC_CAD_ATOR_IZ ('Julia Sweeney','F');
+CALL PROC_CAD_ATOR_IZ ('Julie Delpy','F');
+CALL PROC_CAD_ATOR_IZ ('Julie Hayden','F');
+CALL PROC_CAD_ATOR_IZ ('Juliette Lewis','F');
+CALL PROC_CAD_ATOR_IZ ('Justin Bartha','M');
+CALL PROC_CAD_ATOR_IZ ('Kathy Griffin','F');
+CALL PROC_CAD_ATOR_IZ ('Ken Jeong','M');
+CALL PROC_CAD_ATOR_IZ ('Kibibi Monie','F');
+CALL PROC_CAD_ATOR_IZ ('Kick Gurry','M');
+CALL PROC_CAD_ATOR_IZ ('Kurt Russell','M');
+CALL PROC_CAD_ATOR_IZ ('Lauren German','F');
+CALL PROC_CAD_ATOR_IZ ('Lois Chiles','M');
+CALL PROC_CAD_ATOR_IZ ('Lucy Liu','F');
+CALL PROC_CAD_ATOR_IZ ('Matt Craven','M');
+CALL PROC_CAD_ATOR_IZ ('Meg Tilly','F');
+CALL PROC_CAD_ATOR_IZ ('Mel Gorham','M');
+CALL PROC_CAD_ATOR_IZ ('Michael Keatonr','M');
+CALL PROC_CAD_ATOR_IZ ('Michael Madsen','M');
+CALL PROC_CAD_ATOR_IZ ('Michael Rapaport','M');
+CALL PROC_CAD_ATOR_IZ ('Mickey Rourke','M');
+CALL PROC_CAD_ATOR_IZ ('Nancy Travis','F');
+CALL PROC_CAD_ATOR_IZ ('Natasha Richardson','F');
+CALL PROC_CAD_ATOR_IZ ('Nikolaj Coster-Waldau','M');
+CALL PROC_CAD_ATOR_IZ ('Pam Grier','F');
+CALL PROC_CAD_ATOR_IZ ('Parker Posey','M');
+CALL PROC_CAD_ATOR_IZ ('Patricia Arquette','F');
+CALL PROC_CAD_ATOR_IZ ('Quentin Tarantino','M');
+CALL PROC_CAD_ATOR_IZ ('Raymond Cruz','M');
+CALL PROC_CAD_ATOR_IZ ('Rhys Ifans','M');
+CALL PROC_CAD_ATOR_IZ ('Richard Burgi','M');
+CALL PROC_CAD_ATOR_IZ ('Robert De Niro','M');
+CALL PROC_CAD_ATOR_IZ ('Robert Downey Jr.','M');
+CALL PROC_CAD_ATOR_IZ ('Roger Bart','M');
+CALL PROC_CAD_ATOR_IZ ('Rosario Dawson','F');
+CALL PROC_CAD_ATOR_IZ ('Rosie Perez','F');
+CALL PROC_CAD_ATOR_IZ ('Rutger Hauer','M');
+CALL PROC_CAD_ATOR_IZ ('Salma Hayek','F');
+CALL PROC_CAD_ATOR_IZ ('Sammi Davis','F');
+CALL PROC_CAD_ATOR_IZ ('Samuel L. Jackson','M');
+CALL PROC_CAD_ATOR_IZ ('Stanley Tucci','M');
+CALL PROC_CAD_ATOR_IZ ('Steve Buscemi','M');
+CALL PROC_CAD_ATOR_IZ ('Sydney Tamiia Poitier','M');
+CALL PROC_CAD_ATOR_IZ ('Tai Thai','F');
+CALL PROC_CAD_ATOR_IZ ('Tim Roth','M');
+CALL PROC_CAD_ATOR_IZ ('Tom Lister Jr.','M');
+CALL PROC_CAD_ATOR_IZ ('Tom Sizemore','M');
+CALL PROC_CAD_ATOR_IZ ('Tom Wright','M');
+CALL PROC_CAD_ATOR_IZ ('Tommy Lee Jones','M');
+CALL PROC_CAD_ATOR_IZ ('Uma Thurman','F');
+CALL PROC_CAD_ATOR_IZ ('Valentin Teodosiu','M');
+CALL PROC_CAD_ATOR_IZ ('Valeria Golino','F');
+CALL PROC_CAD_ATOR_IZ ('Vanessa Ferlito','F');
+CALL PROC_CAD_ATOR_IZ ('Viggo Mortensen','M');
+CALL PROC_CAD_ATOR_IZ ('Ving Rhames','M');
+CALL PROC_CAD_ATOR_IZ ('Vivica A. Fox','F');
+CALL PROC_CAD_ATOR_IZ ('William Baldwin','M');
+CALL PROC_CAD_ATOR_IZ ('Wilmer Valderrama','M');
+CALL PROC_CAD_ATOR_IZ ('Woody Harrelson','M');
+CALL PROC_CAD_ATOR_IZ ('Zach Galifianakis','M');
+CALL PROC_CAD_ATOR_IZ ('Zane Holtz','M');
+CALL PROC_CAD_ATOR_IZ ('Zoë Bell','F');
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_CAD_DIRETOR` (IN nome_dir varchar(255))
+BEGIN
+	INSERT INTO `lyne_flix`.`diretor`(`nome_dir`)
+    VALUE (nome_dir);
+END$$
+DELIMITER ;
+
+CALL PROC_CAD_DIRETOR ('Adam Bernstein');
+CALL PROC_CAD_DIRETOR ('Alexandre Rockwell');
+CALL PROC_CAD_DIRETOR ('Eli Roth');
+CALL PROC_CAD_DIRETOR ('Frank Miller');
+CALL PROC_CAD_DIRETOR ('Jack Baran');
+CALL PROC_CAD_DIRETOR ('Jan Eliasberg');
+CALL PROC_CAD_DIRETOR ('Katrina Holden Bronson');
+CALL PROC_CAD_DIRETOR ('Oliver Stone');
+CALL PROC_CAD_DIRETOR ('Quentin Tarantino');
+CALL PROC_CAD_DIRETOR ('Reb Braddock');
+CALL PROC_CAD_DIRETOR ('Robert Rodriguez');
+CALL PROC_CAD_DIRETOR ('Roger Avary');
+CALL PROC_CAD_DIRETOR ('Rory Kelly');
+CALL PROC_CAD_DIRETOR ('Scott Spiegel');
+CALL PROC_CAD_DIRETOR ('Steven Brill');
+CALL PROC_CAD_DIRETOR ('Todd Phillips');
+CALL PROC_CAD_DIRETOR ('Tony Scott');
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_CAD_PAPEL` (IN nome_papel VARCHAR(255),
+									IN ator INT)
+BEGIN
+	INSERT INTO `lyne_flix`.`papel`(`nome_papel`, `ator_iz`)
+    VALUE (nome_papel, ator);
+END$$
+
+DELIMITER ;
+
+CALL PROC_CAD_PAPEL ('"Nice Guy" Eddie Cabot',16);
+CALL PROC_CAD_PAPEL ('Abernathy', 87);
+CALL PROC_CAD_PAPEL ('Adrian',82);
+CALL PROC_CAD_PAPEL ('Alabama Whitman',79);
+CALL PROC_CAD_PAPEL ('Alan Garner',112);
+CALL PROC_CAD_PAPEL ('Angela',47);
+CALL PROC_CAD_PAPEL ('Athena',104);
+CALL PROC_CAD_PAPEL ('Bartender',80);
+CALL PROC_CAD_PAPEL ('Beatrix "The Bride" Kiddo',102);
+CALL PROC_CAD_PAPEL ('Ben Jordan',89);
+CALL PROC_CAD_PAPEL ('Beth',64);
+CALL PROC_CAD_PAPEL ('Bill',26);
+CALL PROC_CAD_PAPEL ('Bucho',51);
+CALL PROC_CAD_PAPEL ('Budd',71);
+CALL PROC_CAD_PAPEL ('Buscemi',94);
+CALL PROC_CAD_PAPEL ('Butch Coolidge',14);
+CALL PROC_CAD_PAPEL ('Butterfly',105);
+CALL PROC_CAD_PAPEL ('Cardinal Patrick Henry Roark',89);
+CALL PROC_CAD_PAPEL ('Carlos Madrigal',110);
+CALL PROC_CAD_PAPEL ('Carolina',90);
+CALL PROC_CAD_PAPEL ('Cassius',98);
+CALL PROC_CAD_PAPEL ('Chief of the Boat',39);
+CALL PROC_CAD_PAPEL ('Chris',25);
+CALL PROC_CAD_PAPEL ('Clarence Pool',80);
+CALL PROC_CAD_PAPEL ('Clarence Worley',17);
+CALL PROC_CAD_PAPEL ('Clifford',2);
+CALL PROC_CAD_PAPEL ('Dad',41);
+CALL PROC_CAD_PAPEL ('Daltry Calhoun',53);
+CALL PROC_CAD_PAPEL ('Destiny',80);
+CALL PROC_CAD_PAPEL ('Det. Jack Scagnetti',99);
+CALL PROC_CAD_PAPEL ('Det. John Hartigan',14);
+CALL PROC_CAD_PAPEL ('Dick Ritchie',72);
+CALL PROC_CAD_PAPEL ('Dorothy Coleman',61);
+CALL PROC_CAD_PAPEL ('Doug Billings',58);
+CALL PROC_CAD_PAPEL ('Doyle Earl',27);
+CALL PROC_CAD_PAPEL ('Drexl Spivey',37);
+CALL PROC_CAD_PAPEL ('Dwight McCarthy',19);
+CALL PROC_CAD_PAPEL ('Eduardo',13);
+CALL PROC_CAD_PAPEL ('El Mariachi',6);
+CALL PROC_CAD_PAPEL ('Elena',69);
+CALL PROC_CAD_PAPEL ('Elle Driver',24);
+CALL PROC_CAD_PAPEL ('Elliot Blitzer',12);
+CALL PROC_CAD_PAPEL ('Emillio',5);
+CALL PROC_CAD_PAPEL ('Eric',46);
+CALL PROC_CAD_PAPEL ('Flora',57);
+CALL PROC_CAD_PAPEL ('François',96);
+CALL PROC_CAD_PAPEL ('Frank',21);
+CALL PROC_CAD_PAPEL ('Frank Ramsey',38);
+CALL PROC_CAD_PAPEL ('Frankie',62);
+CALL PROC_CAD_PAPEL ('George',93);
+CALL PROC_CAD_PAPEL ('Harry Harrelson',41);
+CALL PROC_CAD_PAPEL ('Henri Louche',103);
+CALL PROC_CAD_PAPEL ('Herself',114);
+CALL PROC_CAD_PAPEL ('Jackie Brown',77);
+CALL PROC_CAD_PAPEL ('Jezebel',91);
+CALL PROC_CAD_PAPEL ('Joseph',34);
+CALL PROC_CAD_PAPEL ('Josh',29);
+CALL PROC_CAD_PAPEL ('Jules Winnfield',92);
+CALL PROC_CAD_PAPEL ('Julian',30);
+CALL PROC_CAD_PAPEL ('Jungle Julia',95);
+CALL PROC_CAD_PAPEL ('Kathy Griffin',59);
+CALL PROC_CAD_PAPEL ('Katrina Brandt',65);
+CALL PROC_CAD_PAPEL ('Kyle Jacobsen',15);
+CALL PROC_CAD_PAPEL ('Laura Mathews',75);
+CALL PROC_CAD_PAPEL ('Lee Samuels',100);
+CALL PROC_CAD_PAPEL ('Lodger',8);
+CALL PROC_CAD_PAPEL ('Lorna',42);
+CALL PROC_CAD_PAPEL ('Louis Gara',84);
+CALL PROC_CAD_PAPEL ('Lucille',74);
+CALL PROC_CAD_PAPEL ('Magnata do Entretenimento',4);
+CALL PROC_CAD_PAPEL ('Mallory Knox',57);
+CALL PROC_CAD_PAPEL ('Man',6);
+CALL PROC_CAD_PAPEL ('Marsellus Wallace',107);
+CALL PROC_CAD_PAPEL ('Marv',73);
+CALL PROC_CAD_PAPEL ('May',33);
+CALL PROC_CAD_PAPEL ('Melanie Ralston',11);
+CALL PROC_CAD_PAPEL ('Mercedes',88);
+CALL PROC_CAD_PAPEL ('Mia Wallace',102);
+CALL PROC_CAD_PAPEL ('Michael Madsen',71);
+CALL PROC_CAD_PAPEL ('Mickey Burnett',20);
+CALL PROC_CAD_PAPEL ('Mickey Knox',111);
+CALL PROC_CAD_PAPEL ('Miklos',76);
+CALL PROC_CAD_PAPEL ('Misty',22);
+CALL PROC_CAD_PAPEL ('Modesty Blaise',3);
+CALL PROC_CAD_PAPEL ('Mr. Chow',60);
+CALL PROC_CAD_PAPEL ('Mr. Orange / Freddy Newandyke',97);
+CALL PROC_CAD_PAPEL ('Mr. Pink',94);
+CALL PROC_CAD_PAPEL ('Mr. White / Larry Dimmick',41);
+CALL PROC_CAD_PAPEL ('Nancy Callahan',49);
+CALL PROC_CAD_PAPEL ('Natalya',7);
+CALL PROC_CAD_PAPEL ('Nicky',1);
+CALL PROC_CAD_PAPEL ('Oli',35);
+CALL PROC_CAD_PAPEL ('Ordell Robbie',92);
+CALL PROC_CAD_PAPEL ('O-Ren Ishii',66);
+CALL PROC_CAD_PAPEL ('Pai Mei',40);
+CALL PROC_CAD_PAPEL ('Pat Riley',54);
+CALL PROC_CAD_PAPEL ('Paul Guell',109);
+CALL PROC_CAD_PAPEL ('Paxton',45);
+CALL PROC_CAD_PAPEL ('Peter "WEAPS" Ince',106);
+CALL PROC_CAD_PAPEL ('Phil Wenneck',10);
+CALL PROC_CAD_PAPEL ('Pick-Up Guy',80);
+CALL PROC_CAD_PAPEL ('Professor Lob',36);
+CALL PROC_CAD_PAPEL ('Ranger Freddie Gonzalez',48);
+CALL PROC_CAD_PAPEL ('Raphael Garcia',81);
+CALL PROC_CAD_PAPEL ('Ray Nicolette',70);
+CALL PROC_CAD_PAPEL ('Ricardo',13);
+CALL PROC_CAD_PAPEL ('Richie Gecko',113);
+CALL PROC_CAD_PAPEL ('Ron Hunter',28);
+CALL PROC_CAD_PAPEL ('Roy Zimmer',67);
+CALL PROC_CAD_PAPEL ('Santanico Pandemonium',32);
+CALL PROC_CAD_PAPEL ('Sarah',68);
+CALL PROC_CAD_PAPEL ('Seth Gecko',23);
+CALL PROC_CAD_PAPEL ('Sid',80);
+CALL PROC_CAD_PAPEL ('Stacy Jacobsen',56);
+CALL PROC_CAD_PAPEL ('Steve Lundy',18);
+CALL PROC_CAD_PAPEL ('Stu Price',31);
+CALL PROC_CAD_PAPEL ('Stuart',86);
+CALL PROC_CAD_PAPEL ('Stuntman Mike',63);
+CALL PROC_CAD_PAPEL ('Svetlana',44);
+CALL PROC_CAD_PAPEL ('Ted the Bellhop',97);
+CALL PROC_CAD_PAPEL ('Thoreau',43);
+CALL PROC_CAD_PAPEL ('Todd',83);
+CALL PROC_CAD_PAPEL ('Tuerto',50);
+CALL PROC_CAD_PAPEL ('Valerie Veran',79);
+CALL PROC_CAD_PAPEL ('Vernita Green',108);
+CALL PROC_CAD_PAPEL ('Vincent Vega',52);
+CALL PROC_CAD_PAPEL ('Warden Dwight McClusky',101);
+CALL PROC_CAD_PAPEL ('Wayne Gale',85);
+CALL PROC_CAD_PAPEL ('Whitney',9);
+CALL PROC_CAD_PAPEL ('Zed',34);
+CALL PROC_CAD_PAPEL ('Zoe',55);
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_CAD_GENERO` (IN tipo_genero VARCHAR(255))
+BEGIN
+	INSERT INTO `lyne_flix`.`genero`(`tipo_genero`)
+    VALUE (tipo_genero);
+END$$
+
+DELIMITER ;
+
+CALL PROC_CAD_GENERO('Ação');
+CALL PROC_CAD_GENERO('Comédia');
+CALL PROC_CAD_GENERO('Crime');
+CALL PROC_CAD_GENERO('Drama');
+CALL PROC_CAD_GENERO('Fantasia');
+CALL PROC_CAD_GENERO('Mistério');
+CALL PROC_CAD_GENERO('Música');
+CALL PROC_CAD_GENERO('Romance');
+CALL PROC_CAD_GENERO('Sci-Fi');
+CALL PROC_CAD_GENERO('Terror');
+CALL PROC_CAD_GENERO('Thriller');
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_CAD_FILME` (IN nome_filme VARCHAR(255),
+                                    IN ano_filme VARCHAR(4),
+                                    IN avaliacao INT,
+                                    IN diretor INT)
+BEGIN
+	INSERT INTO `lyne_flix`.`filme`(`nome_filme`, `ano_filme`, `avaliacao`, `diretor`)
+    VALUE (nome_filme, ano_filme, avaliacao, diretor);
+END$$
+
+DELIMITER ;
+
+CALL PROC_CAD_FILME ('Se Beber, Não Case!','2009',73,16);
+CALL PROC_CAD_FILME ('Se Beber, Não Case! Parte II','2013',64,16);
+CALL PROC_CAD_FILME ('Se Beber, Não Case! Parte III','2011',62,16);
+CALL PROC_CAD_FILME ('My Best Friend`s Birthday','1987',58,9);
+CALL PROC_CAD_FILME ('Sombras na Noite','1991',56,6);
+CALL PROC_CAD_FILME ('Cães de Aluguel','1992',82,9);
+CALL PROC_CAD_FILME ('Amor à Queima Roupa','1993',76,17);
+CALL PROC_CAD_FILME ('Pulp Fiction: Tempo de Violência','1994',85,9);
+CALL PROC_CAD_FILME ('Assassinos por Natureza','1994',71,8);
+CALL PROC_CAD_FILME ('Isto é Pat: O Filme','1994',29,1);
+CALL PROC_CAD_FILME ('Alguém para Amar','1994',55,2);
+CALL PROC_CAD_FILME ('Vem Dormir Comigo','1994',61,13);
+CALL PROC_CAD_FILME ('Parceiros do Crime','1994',63,12);
+CALL PROC_CAD_FILME ('Grande Hotel','1995',58,9);
+CALL PROC_CAD_FILME ('A Balada do Pistoleiro','1995',69,11);
+CALL PROC_CAD_FILME ('Johnny Destino','1995',51,5);
+CALL PROC_CAD_FILME ('Maré Vermelha','1995',71,17);
+CALL PROC_CAD_FILME ('Um Drink no Inferno','1996',63,11);
+CALL PROC_CAD_FILME ('Elas Matam e Nós Limpamos','1996',62,10);
+CALL PROC_CAD_FILME ('Jackie Brown','1997',73,9);
+CALL PROC_CAD_FILME ('Um Diabo Diferente','2000',57,15);
+CALL PROC_CAD_FILME ('Kill Bill','2003',80,9);
+CALL PROC_CAD_FILME ('Kill Bill II','2004',78,9);
+CALL PROC_CAD_FILME ('Meu Nome é Modesty Blaise','2004',41,14);
+CALL PROC_CAD_FILME ('Sin City - A Cidade do Pecado','2005',74,4);
+CALL PROC_CAD_FILME ('Daltry Calhoun','2005',53,7);
+CALL PROC_CAD_FILME ('O Albergue','2005',59,3);
+CALL PROC_CAD_FILME ('Grindhouse','2007',70,9);
+CALL PROC_CAD_FILME ('O Albergue - Parte II','2007',58,3);
+CALL PROC_CAD_FILME ('Curdled','1996',62,10);
+
+
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_CAD_FILME_GENERO` (IN filme INT,
+										IN genero INT)
+BEGIN
+	INSERT INTO `lyne_flix`.`filme_genero`(`filme`, `genero`)
+    VALUE (filme, genero);
+END$$
+
+DELIMITER ;
+
+CALL PROC_CAD_FILME_GENERO (1,2);
+CALL PROC_CAD_FILME_GENERO (2,2);
+CALL PROC_CAD_FILME_GENERO (3,2);
+CALL PROC_CAD_FILME_GENERO (4,2);
+CALL PROC_CAD_FILME_GENERO (5,4);
+CALL PROC_CAD_FILME_GENERO (5,6);
+CALL PROC_CAD_FILME_GENERO (5,8);
+CALL PROC_CAD_FILME_GENERO (5,11);
+CALL PROC_CAD_FILME_GENERO (6,3);
+CALL PROC_CAD_FILME_GENERO (7,1);
+CALL PROC_CAD_FILME_GENERO (7,11);
+CALL PROC_CAD_FILME_GENERO (7,3);
+CALL PROC_CAD_FILME_GENERO (7,8);
+CALL PROC_CAD_FILME_GENERO (8,11);
+CALL PROC_CAD_FILME_GENERO (8,3);
+CALL PROC_CAD_FILME_GENERO (9,3);
+CALL PROC_CAD_FILME_GENERO (9,11);
+CALL PROC_CAD_FILME_GENERO (9,4);
+CALL PROC_CAD_FILME_GENERO (10,2);
+CALL PROC_CAD_FILME_GENERO (11,2);
+CALL PROC_CAD_FILME_GENERO (11,4);
+CALL PROC_CAD_FILME_GENERO (12,2);
+CALL PROC_CAD_FILME_GENERO (12,4);
+CALL PROC_CAD_FILME_GENERO (12,8);
+CALL PROC_CAD_FILME_GENERO (1,2);
+CALL PROC_CAD_FILME_GENERO (13,1);
+CALL PROC_CAD_FILME_GENERO (13,3);
+CALL PROC_CAD_FILME_GENERO (13,4);
+CALL PROC_CAD_FILME_GENERO (13,11);
+CALL PROC_CAD_FILME_GENERO (14,3);
+CALL PROC_CAD_FILME_GENERO (14,2);
+CALL PROC_CAD_FILME_GENERO (15,11);
+CALL PROC_CAD_FILME_GENERO (15,1);
+CALL PROC_CAD_FILME_GENERO (15,3);
+CALL PROC_CAD_FILME_GENERO (16,3);
+CALL PROC_CAD_FILME_GENERO (16,2);
+CALL PROC_CAD_FILME_GENERO (16,5);
+CALL PROC_CAD_FILME_GENERO (17,11);
+CALL PROC_CAD_FILME_GENERO (17,1);
+CALL PROC_CAD_FILME_GENERO (18,3);
+CALL PROC_CAD_FILME_GENERO (18,9);
+CALL PROC_CAD_FILME_GENERO (18,5);
+CALL PROC_CAD_FILME_GENERO (19,2);
+CALL PROC_CAD_FILME_GENERO (19,3);
+CALL PROC_CAD_FILME_GENERO (19,11);
+CALL PROC_CAD_FILME_GENERO (20,3);
+CALL PROC_CAD_FILME_GENERO (20,11);
+CALL PROC_CAD_FILME_GENERO (20,4);
+CALL PROC_CAD_FILME_GENERO (21,2);
+CALL PROC_CAD_FILME_GENERO (21,5);
+CALL PROC_CAD_FILME_GENERO (21,8);
+CALL PROC_CAD_FILME_GENERO (21,10);
+CALL PROC_CAD_FILME_GENERO (22,3);
+CALL PROC_CAD_FILME_GENERO (22,1);
+CALL PROC_CAD_FILME_GENERO (23,1);
+CALL PROC_CAD_FILME_GENERO (23,3);
+CALL PROC_CAD_FILME_GENERO (23,11);
+CALL PROC_CAD_FILME_GENERO (24,1);
+CALL PROC_CAD_FILME_GENERO (24,11);
+CALL PROC_CAD_FILME_GENERO (25,1);
+CALL PROC_CAD_FILME_GENERO (25,11);
+CALL PROC_CAD_FILME_GENERO (25,3);
+CALL PROC_CAD_FILME_GENERO (26,2);
+CALL PROC_CAD_FILME_GENERO (26,4);
+CALL PROC_CAD_FILME_GENERO (26,7);
+CALL PROC_CAD_FILME_GENERO (27,10);
+CALL PROC_CAD_FILME_GENERO (28,11);
+CALL PROC_CAD_FILME_GENERO (28,1);
+CALL PROC_CAD_FILME_GENERO (28,10);
+CALL PROC_CAD_FILME_GENERO (29,10);
+CALL PROC_CAD_FILME_GENERO (30,2);
+CALL PROC_CAD_FILME_GENERO (30,11);
+CALL PROC_CAD_FILME_GENERO (30,3);
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_CAD_ELENCO` (IN filme INT,
+									IN papel INT)
+BEGIN
+	INSERT INTO `lyne_flix`.`elenco`(`filme`, `papel`)
+    VALUE (filme, papel);
+END$$
+
+DELIMITER ;
+
+CALL PROC_CAD_ELENCO(1,100);
+
+CALL PROC_CAD_ELENCO(1,116);
+CALL PROC_CAD_ELENCO(1,5);
+CALL PROC_CAD_ELENCO(1,34);
+CALL PROC_CAD_ELENCO(1,85);
+CALL PROC_CAD_ELENCO(2,100);
+CALL PROC_CAD_ELENCO(2,116);
+CALL PROC_CAD_ELENCO(2,5);
+CALL PROC_CAD_ELENCO(2,34);
+CALL PROC_CAD_ELENCO(2,85);
+CALL PROC_CAD_ELENCO(3,100);
+CALL PROC_CAD_ELENCO(3,116);
+CALL PROC_CAD_ELENCO(3,5);
+CALL PROC_CAD_ELENCO(3,34);
+CALL PROC_CAD_ELENCO(3,85);
+CALL PROC_CAD_ELENCO(4,80);
+CALL PROC_CAD_ELENCO(4,24);
+CALL PROC_CAD_ELENCO(4,83);
+CALL PROC_CAD_ELENCO(4,70);
+CALL PROC_CAD_ELENCO(4,26);
+CALL PROC_CAD_ELENCO(5,10);
+CALL PROC_CAD_ELENCO(5,64);
+CALL PROC_CAD_ELENCO(5,115);
+CALL PROC_CAD_ELENCO(5,33);
+CALL PROC_CAD_ELENCO(5,65);
+CALL PROC_CAD_ELENCO(6,88);
+CALL PROC_CAD_ELENCO(6,86);
+CALL PROC_CAD_ELENCO(6,79);
+CALL PROC_CAD_ELENCO(6,1);
+CALL PROC_CAD_ELENCO(6,87);
+CALL PROC_CAD_ELENCO(7,25);
+CALL PROC_CAD_ELENCO(7,4);
+CALL PROC_CAD_ELENCO(7,32);
+CALL PROC_CAD_ELENCO(7,42);
+CALL PROC_CAD_ELENCO(7,36);
+CALL PROC_CAD_ELENCO(8,126);
+CALL PROC_CAD_ELENCO(8,58);
+CALL PROC_CAD_ELENCO(8,78);
+CALL PROC_CAD_ELENCO(8,16);
+CALL PROC_CAD_ELENCO(8,73);
+CALL PROC_CAD_ELENCO(9,81);
+CALL PROC_CAD_ELENCO(9,71);
+CALL PROC_CAD_ELENCO(9,128);
+CALL PROC_CAD_ELENCO(9,127);
+CALL PROC_CAD_ELENCO(9,30);
+CALL PROC_CAD_ELENCO(10,96);
+CALL PROC_CAD_ELENCO(10,23);
+CALL PROC_CAD_ELENCO(10,63);
+CALL PROC_CAD_ELENCO(10,61);
+CALL PROC_CAD_ELENCO(10,114);
+CALL PROC_CAD_ELENCO(11,8);
+CALL PROC_CAD_ELENCO(11,50);
+CALL PROC_CAD_ELENCO(11,43);
+CALL PROC_CAD_ELENCO(11,51);
+CALL PROC_CAD_ELENCO(11,77);
+CALL PROC_CAD_ELENCO(12,113);
+CALL PROC_CAD_ELENCO(12,111);
+CALL PROC_CAD_ELENCO(12,47);
+CALL PROC_CAD_ELENCO(12,56);
+CALL PROC_CAD_ELENCO(12,7);
+CALL PROC_CAD_ELENCO(13,130);
+CALL PROC_CAD_ELENCO(13,131);
+CALL PROC_CAD_ELENCO(13,44);
+CALL PROC_CAD_ELENCO(13,46);
+CALL PROC_CAD_ELENCO(13,106);
+CALL PROC_CAD_ELENCO(14,120);
+CALL PROC_CAD_ELENCO(14,6);
+CALL PROC_CAD_ELENCO(14,72);
+CALL PROC_CAD_ELENCO(14,7);
+CALL PROC_CAD_ELENCO(14,55);
+CALL PROC_CAD_ELENCO(15,101);
+CALL PROC_CAD_ELENCO(15,39);
+CALL PROC_CAD_ELENCO(15,20);
+CALL PROC_CAD_ELENCO(15,13);
+CALL PROC_CAD_ELENCO(15,15);
+CALL PROC_CAD_ELENCO(16,29);
+CALL PROC_CAD_ELENCO(16,121);
+CALL PROC_CAD_ELENCO(16,69);
+CALL PROC_CAD_ELENCO(16,59);
+CALL PROC_CAD_ELENCO(16,123);
+CALL PROC_CAD_ELENCO(17,108);
+CALL PROC_CAD_ELENCO(17,48);
+CALL PROC_CAD_ELENCO(17,109);
+CALL PROC_CAD_ELENCO(17,22);
+CALL PROC_CAD_ELENCO(17,99);
+CALL PROC_CAD_ELENCO(18,112);
+CALL PROC_CAD_ELENCO(18,107);
+CALL PROC_CAD_ELENCO(18,110);
+CALL PROC_CAD_ELENCO(18,103);
+CALL PROC_CAD_ELENCO(18,19);
+CALL PROC_CAD_ELENCO(19,38);
+CALL PROC_CAD_ELENCO(19,97);
+CALL PROC_CAD_ELENCO(19,62);
+CALL PROC_CAD_ELENCO(19,66);
+CALL PROC_CAD_ELENCO(19,40);
+CALL PROC_CAD_ELENCO(20,54);
+CALL PROC_CAD_ELENCO(20,93);
+CALL PROC_CAD_ELENCO(20,68);
+CALL PROC_CAD_ELENCO(20,76);
+CALL PROC_CAD_ELENCO(20,105);
+CALL PROC_CAD_ELENCO(21,91);
+CALL PROC_CAD_ELENCO(21,124);
+CALL PROC_CAD_ELENCO(21,27);
+CALL PROC_CAD_ELENCO(21,3);
+CALL PROC_CAD_ELENCO(21,21);
+CALL PROC_CAD_ELENCO(22,9);
+CALL PROC_CAD_ELENCO(22,94);
+CALL PROC_CAD_ELENCO(22,125);
+CALL PROC_CAD_ELENCO(22,41);
+CALL PROC_CAD_ELENCO(22,12);
+CALL PROC_CAD_ELENCO(23,9);
+CALL PROC_CAD_ELENCO(23,14);
+CALL PROC_CAD_ELENCO(23,95);
+CALL PROC_CAD_ELENCO(23,41);
+CALL PROC_CAD_ELENCO(23,12);
+CALL PROC_CAD_ELENCO(24,84);
+CALL PROC_CAD_ELENCO(24,82);
+CALL PROC_CAD_ELENCO(24,104);
+CALL PROC_CAD_ELENCO(24,102);
+CALL PROC_CAD_ELENCO(24,52);
+CALL PROC_CAD_ELENCO(25,31);
+CALL PROC_CAD_ELENCO(25,89);
+CALL PROC_CAD_ELENCO(25,37);
+CALL PROC_CAD_ELENCO(25,74);
+CALL PROC_CAD_ELENCO(25,18);
+CALL PROC_CAD_ELENCO(26,28);
+CALL PROC_CAD_ELENCO(26,75);
+CALL PROC_CAD_ELENCO(26,45);
+CALL PROC_CAD_ELENCO(26,35);
+CALL PROC_CAD_ELENCO(26,49);
+CALL PROC_CAD_ELENCO(27,98);
+CALL PROC_CAD_ELENCO(27,57);
+CALL PROC_CAD_ELENCO(27,92);
+CALL PROC_CAD_ELENCO(27,90);
+CALL PROC_CAD_ELENCO(27,119);
+CALL PROC_CAD_ELENCO(28,118);
+CALL PROC_CAD_ELENCO(28,53);
+CALL PROC_CAD_ELENCO(28,2);
+CALL PROC_CAD_ELENCO(28,17);
+CALL PROC_CAD_ELENCO(28,60);
+CALL PROC_CAD_ELENCO(29,11);
+CALL PROC_CAD_ELENCO(29,129);
+CALL PROC_CAD_ELENCO(29,67);
+CALL PROC_CAD_ELENCO(29,122);
+CALL PROC_CAD_ELENCO(29,117);
+CALL PROC_CAD_ELENCO(30,38);
+CALL PROC_CAD_ELENCO(30,97);
+CALL PROC_CAD_ELENCO(30,62);
+CALL PROC_CAD_ELENCO(30,66);
+CALL PROC_CAD_ELENCO(30,40);
+
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_UP_ATOR_IZ`(IN id_ator INT,
+									IN nome varchar(255), 
+									IN genero varchar(1))
+BEGIN
+	UPDATE ator_iz
+   set nome = nome,
+       genero = genero
+		
+	where id_ator_iz = id_ator;
+    
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_UP_DIRETOR`(IN id INT,
+									IN nome_dir varchar(255))
+BEGIN
+	UPDATE diretor
+   set nome_dir = nome_dir
+		
+	where id_diretor = id;
+    
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_UP_ELENCO`(IN filme INT,
+								  IN papel INT)
+BEGIN
+	UPDATE elenco
+   set filme = filme,
+		papel = papel;
+    
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_UP_FILME_GENERO`(IN filme INT,
+								  IN genero INT)
+BEGIN
+	UPDATE filme_genero
+   set filme = filme,
+		genero = genero
+		
+	where filme = filme;
+    
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_UP_FILME`(IN id INT,
+								  IN nome_filme VARCHAR(255),
+                                  IN ano_filme VARCHAR(4),
+                                  IN avaliacao INT,
+                                   IN diretor INT)
+BEGIN
+	UPDATE filme
+   set nome_filme = nome_filme,
+        ano_filme = ano_filme,
+        avaliacao = avaliacao,
+        diretor = diretor
+		
+	where id_filme = id;
+    
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_UP_GENERO`(IN id INT,
+									IN tipo_genero varchar(255))
+BEGIN
+	UPDATE genero
+   set tipo_genero = tipo_genero
+		
+	where id_genero = id;
+    
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `PROC_UP_PAPEL`(IN id INT,
+									IN nome varchar(255),
+                                    IN ator_iz INT)
+BEGIN
+	UPDATE papel
+   set nome_papel = nome,
+		ator_iz = ator_iz
+		
+	where id_papel = id;
+    
+END$$
+
+DELIMITER ;
+
+CREATE OR REPLACE VIEW `VW_LISTA_ATOR_CRIME` AS
+select
+		id_ator_iz,
+        nome,
+        count(papel.ator_iz) as "quantidade papeis"
+        
+from filme
+    
+    inner join elenco on elenco.filme =filme.id_filme
+    inner join papel on papel.id_papel = elenco.papel
+    inner join ator_iz on ator_iz.id_ator_iz = papel.ator_iz 
+    inner join filme_genero on filme_genero.filme = filme.id_filme
+    inner join genero on genero.id_genero = filme_genero.genero
+    
+	where lower(genero.tipo_genero) like '%crime%'
+    group by id_ator_iz,
+			nome
+	order by count(papel.ator_iz) desc limit 10;
+        
+SELECT * FROM VW_LISTA_ATOR_CRIME;
+
+CREATE OR REPLACE VIEW `VW_LISTA_GENERO_QTDADE` AS
+SELECT 
+	tipo_genero,
+	count(filme_genero.genero)
+    
+    from filme_genero
+    
+    inner join filme on filme.id_filme = filme_genero.filme
+    inner join genero on genero.id_genero = filme_genero.genero
+    group by tipo_genero
+    order by count(filme_genero.genero) asc; 
+    
+SELECT * FROM VW_LISTA_GENERO_QTDADE;
+
+CREATE OR REPLACE VIEW `VW_FILME_TARANTINO` AS
+SELECT 
+	nome_filme,
+    nome,
+    nome_papel
+	
+    from filme
+    
+    inner join elenco on elenco.filme =filme.id_filme
+    inner join papel on papel.id_papel = elenco.papel
+    inner join ator_iz on ator_iz.id_ator_iz = papel.ator_iz 
+    where lower(ator_iz.nome) like '%quentin%'
+    group by nome_filme,
+			nome,
+            nome_papel;
+            
+SELECT * FROM VW_FILME_TARANTINO;
+
+CREATE OR REPLACE VIEW `VW_FILME_SE_BEBER` AS	
+SELECT
+	nome_filme,
+    nome,
+    nome_papel,
+    ano_filme
+    
+    from filme
+    inner join elenco on elenco.filme = filme.id_filme
+    inner join papel on papel.id_papel = elenco.papel
+    inner join ator_iz on ator_iz.id_ator_iz = papel.ator_iz 
+    where lower(filme.nome_filme) like '%Beber%'
+    group by nome_filme,
+			nome,
+            nome_papel,
+            ano_filme
+	order by ano_filme asc;
+    
+SELECT * FROM VW_FILME_SE_BEBER;
+
+CREATE OR REPLACE VIEW `VW_ATOR_DIF_GENERO` AS
+SELECT
+    nome,
+    count(distinct(filme_genero.genero))
+ from filme_genero
+inner join genero on genero.id_genero = filme_genero.genero
+inner join elenco on elenco.filme = filme_genero.filme
+inner join papel on elenco.papel = papel.id_papel
+inner join ator_iz on ator_iz.id_ator_iz = papel.ator_iz
+group by 1
+order by count(distinct(filme_genero.genero)) desc limit 10;
+    
+SELECT * FROM VW_ATOR_DIF_GENERO;
+    
