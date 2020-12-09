@@ -406,8 +406,8 @@ END$$
 DELIMITER ;
 
 CALL PROC_CAD_FILME ('Se Beber, Não Case!','2009',73,16);
-CALL PROC_CAD_FILME ('Se Beber, Não Case! Parte II','2013',64,16);
-CALL PROC_CAD_FILME ('Se Beber, Não Case! Parte III','2011',62,16);
+CALL PROC_CAD_FILME ('Se Beber, Não Case! Parte II','2011',64,16);
+CALL PROC_CAD_FILME ('Se Beber, Não Case! Parte III','2013',62,16);
 CALL PROC_CAD_FILME ('My Best Friend`s Birthday','1987',58,9);
 CALL PROC_CAD_FILME ('Sombras na Noite','1991',56,6);
 CALL PROC_CAD_FILME ('Cães de Aluguel','1992',82,9);
